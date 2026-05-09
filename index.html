@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BeGifted · Snapshot Builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -465,36 +466,169 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
 
 /* ---------- PRINT ---------- */
 @media print{
-  body{background:white}
-  .app{display:block;height:auto}
-  .form-panel{display:none}
-  .preview{padding:0;background:white;overflow:visible}
-  .report{max-width:none;margin:0}
-  .page{
-    margin:0;
-    box-shadow:none;
-    page-break-after:always;
-    width:100%;
-    min-height:297mm;
-    height:297mm;
+  *,*::before,*::after{
+    print-color-adjust:exact !important;
+    -webkit-print-color-adjust:exact !important;
+    color-adjust:exact !important;
   }
-  .page:last-child{page-break-after:auto}
+  html,body{
+    background:white !important;
+    background-color:white !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  .app{
+    display:block !important;
+    grid-template-columns:none !important;
+    height:auto !important;
+  }
+  .form-panel,.mobile-tabs,.print-hint{display:none !important}
+  .preview{
+    padding:0 !important;
+    background:white !important;
+    background-color:white !important;
+    overflow:visible !important;
+    display:block !important;
+    width:100% !important;
+  }
+  .report{max-width:none !important;margin:0 !important;width:100% !important}
+  .page{
+    margin:0 !important;
+    box-shadow:none !important;
+    page-break-after:always !important;
+    width:100% !important;
+    min-height:297mm !important;
+    height:297mm !important;
+  }
+  .page:last-child{page-break-after:auto !important}
   @page{size:A4;margin:0}
+}
+
+/* ---------- MOBILE TABS ---------- */
+.mobile-tabs{
+  display:none;
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:white;
+  border-bottom:1px solid var(--border);
+}
+.mobile-tabs button{
+  flex:1;
+  background:none;
+  border:none;
+  padding:14px 0;
+  font-family:var(--body);
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  cursor:pointer;
+  position:relative;
+  transition:color .2s;
+}
+.mobile-tabs button.active{color:var(--blue)}
+.mobile-tabs button.active::after{
+  content:"";
+  position:absolute;
+  bottom:0;left:25%;right:25%;
+  height:2px;
+  background:var(--blue);
+}
+
+/* ---------- PRINT HINT ---------- */
+.print-hint{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:10px;
+  padding:8px 10px;
+  background:#FFF8E6;
+  border-left:3px solid var(--orange);
+  border-radius:3px;
+  line-height:1.5;
+}
+.print-hint b{color:var(--text);font-weight:600}
+
+/* ---------- MOBILE RESPONSIVE ---------- */
+@media screen and (max-width:760px){
+  .app{
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:100vh;
+  }
+  .mobile-tabs{display:flex}
+  .form-panel{
+    display:none;
+    border-right:0;
+    height:auto;
+    min-height:calc(100vh - 50px);
+  }
+  .form-panel.active{display:flex}
+  .preview{
+    display:none;
+    padding:16px 10px 60px;
+    overflow-x:hidden;
+  }
+  .preview.active{display:block}
+
+  /* fluid pages on mobile preview */
+  .report{max-width:100%;width:100%}
+  .page{
+    width:100%;
+    min-height:auto;
+    padding:20px 16px;
+    margin-bottom:14px;
+    font-size:10pt;
+  }
+  .report-title{font-size:22pt}
+  .section-head{font-size:12pt}
+  .section-head.smaller{font-size:11pt}
+  .kpi-strip{grid-template-columns:1fr 1fr 1fr}
+  .kpi-strip .kpi:nth-child(4),
+  .kpi-strip .kpi:nth-child(5){border-top:1px solid var(--border)}
+  .kpi{padding:10px 8px}
+  .kpi-num{font-size:20pt}
+  .kpi-label{font-size:8pt}
+  .compare-grid{grid-template-columns:1fr}
+  .compare-col + .compare-col{border-left:0;border-top:1px solid var(--border)}
+  .plans-grid{grid-template-columns:1fr}
+  .plan-card + .plan-card{border-left:0;border-top:1px solid var(--border)}
+  .plan-hours{font-size:20pt}
+  .metabox{grid-template-columns:1fr 1fr;gap:6px 16px}
+  .topic-chips{flex-wrap:wrap}
+  .topic-chips .chip{flex:0 1 auto}
+
+  /* form */
+  .form-header{padding:16px 18px 14px}
+  .form-header h1{font-size:16px}
+  .form-body{padding:6px 18px 30px}
+  .btn-row{flex-direction:column}
+  .btn-primary{flex:none}
+  .field-row,.field-row-3{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
+
+<!-- ============ MOBILE TABS ============ -->
+<div class="mobile-tabs">
+  <button class="tab-btn active" data-target="form">FORM</button>
+  <button class="tab-btn" data-target="preview">PREVIEW</button>
+</div>
+
 <div class="app">
 
   <!-- ============ FORM PANEL ============ -->
-  <aside class="form-panel">
+  <aside class="form-panel active">
     <div class="form-header">
       <h1>BeGifted <span>·</span> Snapshot Builder</h1>
       <p>Fill the form. Hit Save as PDF.</p>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="window.print()">⇩ Save as PDF</button>
+        <button class="btn btn-primary" onclick="printPDF()">⇩ Save as PDF</button>
         <button class="btn btn-secondary" onclick="loadExample()">Load Finn example</button>
         <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+      <div class="print-hint">
+        <b>First print only:</b> In Chrome's print dialog → expand <em>More settings</em> → enable <b>Background graphics</b> and set <b>Margins: None</b>. Chrome remembers this.
       </div>
     </div>
 
@@ -1066,6 +1200,24 @@ function render(){
 
 /* ---------- WIRE UP ---------- */
 document.querySelectorAll('[data-update]').forEach(el => el.addEventListener('input', render));
+
+/* ---------- PRINT PDF (with auto filename) ---------- */
+function printPDF(){
+  const name = get('name') || 'student';
+  const date = new Date().toISOString().slice(0,10);
+  document.title = `BeGifted Snapshot - ${name} - ${date}`;
+  window.print();
+}
+
+/* ---------- MOBILE TAB TOGGLE ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.onclick = () => {
+    const target = btn.dataset.target;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b===btn));
+    document.querySelector('.form-panel').classList.toggle('active', target==='form');
+    document.querySelector('.preview').classList.toggle('active', target==='preview');
+  };
+});
 
 /* Boot with Finn data */
 loadData(FINN);
