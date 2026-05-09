@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BeGifted · Snapshot Builder</title>
+<title>BeGifted · Diagnostic Report Builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ---------- DESIGN TOKENS ---------- */
 :root{
@@ -29,8 +29,8 @@
   --page-w:210mm;
   --page-h:297mm;
   --page-pad:16mm;
-  --display:'Manrope',system-ui,sans-serif;
-  --body:'Source Sans 3','Source Sans Pro',system-ui,sans-serif;
+  --display:'Poppins',system-ui,sans-serif;
+  --body:'Poppins',system-ui,sans-serif;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -620,8 +620,8 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
   <!-- ============ FORM PANEL ============ -->
   <aside class="form-panel active">
     <div class="form-header">
-      <h1>BeGifted <span>·</span> Snapshot Builder</h1>
-      <p>Fill the form. Hit Save as PDF.</p>
+      <h1>BeGifted <span>·</span> Report Builder</h1>
+      <p>Complete the form below to generate a diagnostic report.</p>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="printPDF()">⇩ Save as PDF</button>
         <button class="btn btn-secondary" onclick="loadExample()">Load Finn example</button>
@@ -727,14 +727,14 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
       </div>
 
       <div class="form-section">
-        <h2>Key Takeaways</h2>
+        <h2>Key Findings</h2>
         <div class="field"><label>Bullets (one per line)</label>
           <textarea id="takeaways" data-update style="min-height:110px"></textarea>
         </div>
       </div>
 
       <div class="form-section">
-        <h2>R&amp;W Plan</h2>
+        <h2>Reading &amp; Writing Plan</h2>
         <div class="field-row-3">
           <div><label>Hours</label><input id="rw_hours" type="number" data-update></div>
           <div><label>Classes</label><input id="rw_classes" type="number" data-update></div>
@@ -777,7 +777,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
           <div><label>Total package hrs</label><input id="pkg_hours" type="number" data-update></div>
           <div><label>Cadence</label><input id="cadence" data-update placeholder="2 classes per week (equal)"></div>
         </div>
-        <div class="field"><label>"Ready to start" body</label>
+        <div class="field"><label>"Get Started" body</label>
           <textarea id="cta_body" data-update></textarea>
         </div>
         <div class="field"><label>CTA link text</label>
@@ -797,10 +797,10 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
         <div class="page-content">
           <div class="brand-bar">
             <div class="brand-left">BeGifted Education</div>
-            <div class="brand-right">Snapshot</div>
+            <div class="brand-right">Diagnostic Report</div>
           </div>
-          <h1 class="report-title">Snapshot — <span id="p_name"></span></h1>
-          <p class="report-subtitle">SAT diagnostic report for <span id="p_grade"></span> at <span id="p_school"></span></p>
+          <h1 class="report-title">SAT Diagnostic Report</h1>
+          <p class="report-subtitle"><strong id="p_name"></strong> · <span id="p_grade"></span> · <span id="p_school"></span></p>
 
           <div class="metabox">
             <div><b>Student:</b> <span id="p_name2"></span></div>
@@ -809,7 +809,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
             <div><b>Target SAT:</b> <span id="p_target2"></span></div>
           </div>
 
-          <div class="headsup" id="p_headsup_wrap"><b>Heads up:</b> <span id="p_headsup"></span></div>
+          <div class="headsup" id="p_headsup_wrap"><b>Note:</b> <span id="p_headsup"></span></div>
 
           <div class="kpi-strip">
             <div class="kpi"><div class="kpi-num" id="p_composite"></div><div class="kpi-label">Composite</div></div>
@@ -819,7 +819,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
             <div class="kpi"><div class="kpi-num gap" id="p_gap"></div><div class="kpi-label">Gap</div></div>
           </div>
 
-          <h2 class="section-head smaller">Score-Band Snapshot</h2>
+          <h2 class="section-head smaller">Score Overview</h2>
           <div class="scoreband-wrap" id="p_scoreband"></div>
 
           <ul id="p_summary"></ul>
@@ -830,8 +830,8 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
       <!-- ===== PAGE 2 ===== -->
       <div class="page">
         <div class="page-content">
-          <h2 class="section-head">Where They Stand</h2>
-          <p class="section-sub">A domain-by-domain view of current readiness and the most useful next focus.</p>
+          <h2 class="section-head">Subject Performance</h2>
+          <p class="section-sub">Performance by subject area, showing which areas need the most attention.</p>
           <div id="p_domain_chart"></div>
           <table class="domain-table" id="p_domain_table">
             <thead><tr><th>Domain</th><th style="width:120px">Accuracy</th><th style="width:140px">Status</th></tr></thead>
@@ -844,10 +844,10 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
       <!-- ===== PAGE 3 ===== -->
       <div class="page">
         <div class="page-content">
-          <h2 class="section-head">Module-by-Module Performance</h2>
+          <h2 class="section-head">Test Module Results</h2>
           <div id="p_module_chart"></div>
 
-          <h3 class="section-head smaller">Key Takeaways</h3>
+          <h3 class="section-head smaller">Summary</h3>
           <ul id="p_takeaways"></ul>
         </div>
         <div class="page-footer">BeGifted Education — Confidential | Page 3 of 5</div>
@@ -883,22 +883,21 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
       <!-- ===== PAGE 5 ===== -->
       <div class="page">
         <div class="page-content">
-          <h2 class="section-head">What We Recommend</h2>
-          <p class="section-sub">A practical prep path built from the deterministic track engine.</p>
+          <h2 class="section-head">Our Recommendation</h2>
+          <p class="section-sub">A study plan based on the test results.</p>
 
-          <h3 class="section-head smaller">Closing the gap</h3>
+          <h3 class="section-head smaller">Score Gap</h3>
           <p style="margin:4px 0">
-            <span id="p_closing_name"></span> is <span id="p_closing_gap"></span> points from the
-            <span id="p_closing_target"></span> target, with R&amp;W at <span id="p_closing_rw"></span>
-            and Math at <span id="p_closing_math"></span>.
+            <span id="p_closing_name"></span> is <span id="p_closing_gap"></span> points below the target of <span id="p_closing_target"></span>.<br>
+            Reading &amp; Writing: <span id="p_closing_rw"></span>. Math: <span id="p_closing_math"></span>.
           </p>
           <p class="package-callout">
-            Recommended package: <span id="p_pkg_hours"></span> hours.
-            Cadence: <span id="p_cadence"></span>.
+            Recommended plan: <span id="p_pkg_hours"></span> hours total.
+            Schedule: <span id="p_cadence"></span>.
           </p>
 
-          <h3 class="section-head smaller">Recommended cadence</h3>
-          <p style="margin:4px 0">Two equally weighted classes per week keep the workload manageable while building both R&amp;W and Math skills in parallel without over-loading either side.</p>
+          <h3 class="section-head smaller">Study Schedule</h3>
+          <p style="margin:4px 0">Two classes per week keeps the workload balanced. Reading &amp; Writing and Math improve at the same pace.</p>
 
           <div class="plans-grid" style="margin-top:14px">
             <div class="plan-card">
@@ -928,7 +927,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
           </div>
 
           <div class="cta-box">
-            <h3>Ready to start?</h3>
+            <h3>Get Started</h3>
             <p id="p_cta_body"></p>
             <div class="cta-link" id="p_cta_link"></div>
           </div>
@@ -945,25 +944,25 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
 const FINN = {
   name:'Finn', school:'RIS', grade:'Year 11',
   rw:620, math:670, target:1500,
-  headsup:'Form name "Finn" differs from extracted PDF name "Finn.e". Form value used for title and filename.',
+  headsup:'Form name "Finn" is different from PDF name "Finn.e". Used form name for the report.',
   d1:67, d2:50, d3:100, d4:80, d5:85, d6:76, d7:75, d8:75,
   m_rw1:74, m_rw2:74, m_rw2_path:'hard',
   m_m1:91, m_m2:73, m_m2_path:'hard',
-  rw_strengths:'Strong consistency across Information and Ideas, Expression of Ideas, and Standard English Conventions.\nGood test stamina — accuracy holds up across both modules without a late-section drop.',
-  rw_grow:'The single biggest opportunity is Craft and Structure, especially vocabulary-in-context and authorial intent questions.',
-  rw_topics:'Vocabulary in context\nAuthorial intent and tone\nWord-choice nuance',
-  m_strengths:"Confident on Algebra and Problem Solving and Data Analysis when time isn't a factor.\nStrong reasoning on multi-step word problems where the setup is straightforward.",
-  m_grow:'Pacing is the central issue — two unanswered questions in M2 and a pacing flag suggest time pressure, not content gaps.',
-  m_topics:'Nonlinear functions under time pressure\nM2 question triage\nQuick-elimination strategies',
-  takeaways:"Finn's 1290 leaves a 210-point gap to the 1500 target with strong content fundamentals on both sections.\nReading and Writing's Craft and Structure (vocabulary in context) is the single largest growth area for R&W.\nMath content is solid; the M2 pacing flag and 2 unanswered questions point to time pressure as the issue.\nAn 80-hour, equally weighted prep plan at 2 sessions per week sits comfortably inside the recommended timeframe.",
+  rw_strengths:'Good performance in Information and Ideas, Expression of Ideas, and Standard English.\nFocus stays strong from start to end of the test.',
+  rw_grow:'Vocabulary in context is the main area to improve, along with understanding the writer\'s intent.',
+  rw_topics:'Vocabulary in context\nAuthor intent and tone\nWord choice',
+  m_strengths:"Strong in Algebra and Data Analysis when there is enough time.\nGood with multi-step word problems.",
+  m_grow:'Time management is the main issue. Two questions were unanswered in Module 2 due to time pressure.',
+  m_topics:'Nonlinear functions (with time)\nModule 2 time strategy\nQuick elimination',
+  takeaways:"Finn scored 1290. The gap to the 1500 target is 210 points.\nReading and Writing needs the most work, especially vocabulary in context.\nMath skills are strong, but Finn needs to manage time better in Module 2.\nAn 80-hour plan with 2 classes per week is enough time to reach the goal.",
   rw_hours:30, rw_classes:15, rw_hrper:2,
   rw_track:'Advanced', rw_time:'3.5 months', rw_issue:'domain-mastery',
-  rw_focus:'Vocabulary in context\nAuthorial intent and tone\nWord-choice nuance',
+  rw_focus:'Vocabulary in context\nAuthor intent and tone\nWord choice',
   m_hours:30, m_classes:20, m_hrper:1.5,
   m_track:'Intermediate', m_time:'4.6 months', m_issue:'pacing',
-  m_focus:'Nonlinear functions under time pressure\nM2 question triage\nQuick-elimination strategies',
+  m_focus:'Nonlinear functions (with time)\nModule 2 time strategy\nQuick elimination',
   pkg_hours:80, cadence:'2 classes per week (equal)',
-  cta_body:'Start with Craft and Structure vocabulary work in R&W and timed Module 2 drills in Math. Two sessions per week keeps the student on track for the recommended timeframe.',
+  cta_body:'Start with vocabulary practice in Reading & Writing and timed practice in Math Module 2. Two classes per week keeps the student on track to reach the target.',
   cta_link:'Book a free SAT consultation: begifted.com/trial'
 };
 
@@ -1010,19 +1009,19 @@ function scoreBand(){
     <rect x="${padL}" y="${H/2-7}" width="${W-padL-padR}" height="14" rx="3" fill="#E5E9F0"/>
     <rect x="${x(target-50)}" y="${H/2-7}" width="${x(target)-x(target-50)}" height="14" fill="#B8C4DB" opacity="0.6"/>
     <line x1="${targetX}" y1="${padT-5}" x2="${targetX}" y2="${H-padB+5}" stroke="${cssVar('--orange')}" stroke-width="2"/>
-    <text x="${targetX}" y="${H-padB+18}" fill="${cssVar('--orange')}" font-family="Manrope" font-weight="700" font-size="11" text-anchor="middle">Target: ${target}</text>
+    <text x="${targetX}" y="${H-padB+18}" fill="${cssVar('--orange')}" font-family="Poppins" font-weight="700" font-size="11" text-anchor="middle">Target: ${target}</text>
 
     <circle cx="${rwX}" cy="${H/2}" r="6" fill="${cssVar('--blue')}"/>
-    <text x="${rwX}" y="${H/2-12}" fill="${cssVar('--blue')}" font-family="Manrope" font-weight="600" font-size="11" text-anchor="middle">R&amp;W: ${rw}</text>
+    <text x="${rwX}" y="${H/2-12}" fill="${cssVar('--blue')}" font-family="Poppins" font-weight="600" font-size="11" text-anchor="middle">R&amp;W: ${rw}</text>
 
     <circle cx="${mathX}" cy="${H/2}" r="6" fill="${cssVar('--blue')}"/>
-    <text x="${mathX}" y="${H/2+22}" fill="${cssVar('--blue')}" font-family="Manrope" font-weight="600" font-size="11" text-anchor="middle">Math: ${math}</text>
+    <text x="${mathX}" y="${H/2+22}" fill="${cssVar('--blue')}" font-family="Poppins" font-weight="600" font-size="11" text-anchor="middle">Math: ${math}</text>
 
     <circle cx="${compX}" cy="${H/2}" r="7" fill="${cssVar('--blue-dark')}"/>
-    <text x="${compX}" y="${H/2-14}" fill="${cssVar('--blue-dark')}" font-family="Manrope" font-weight="700" font-size="12" text-anchor="middle">Composite: ${composite}</text>
+    <text x="${compX}" y="${H/2-14}" fill="${cssVar('--blue-dark')}" font-family="Poppins" font-weight="700" font-size="12" text-anchor="middle">Composite: ${composite}</text>
 
     ${[400,800,1200,1600].map(s => `
-      <text x="${x(s)}" y="${H-padB+18}" font-family="Manrope" font-size="10" fill="${cssVar('--muted')}" text-anchor="middle">${s}</text>
+      <text x="${x(s)}" y="${H-padB+18}" font-family="Poppins" font-size="10" fill="${cssVar('--muted')}" text-anchor="middle">${s}</text>
     `).join('')}
   </svg>`;
 }
@@ -1047,20 +1046,20 @@ function domainChart(){
   const barAreaW = W - padL - padR;
 
   let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block;margin:8px 0" xmlns="http://www.w3.org/2000/svg">`;
-  svg += `<text x="${padL}" y="18" font-family="Manrope" font-weight="700" font-size="12" fill="${cssVar('--blue')}">Domain Accuracy — Reading &amp; Writing (top) / Math (bottom)</text>`;
+  svg += `<text x="${padL}" y="18" font-family="Poppins" font-weight="700" font-size="12" fill="${cssVar('--blue')}">Domain Accuracy — Reading &amp; Writing (top) / Math (bottom)</text>`;
   // axis ticks
   [0,25,50,75,100].forEach(p => {
     const xx = padL + (p/100) * barAreaW;
     svg += `<line x1="${xx}" y1="${padT}" x2="${xx}" y2="${H-padB}" stroke="#EAEEF4" stroke-width="1"/>`;
-    svg += `<text x="${xx}" y="${H-padB+16}" font-family="Manrope" font-size="10" fill="${cssVar('--muted')}" text-anchor="middle">${p}%</text>`;
+    svg += `<text x="${xx}" y="${H-padB+16}" font-family="Poppins" font-size="10" fill="${cssVar('--muted')}" text-anchor="middle">${p}%</text>`;
   });
   items.forEach((it,i)=>{
     const y = padT + i*rowH + rowH/2;
     const w = (it.v/100) * barAreaW;
     const c = statusColor(statusFor(it.v));
-    svg += `<text x="${padL-10}" y="${y+4}" font-family="Source Sans 3" font-size="11" fill="${cssVar('--text')}" text-anchor="end">${it.label}</text>`;
+    svg += `<text x="${padL-10}" y="${y+4}" font-family="Poppins" font-size="11" fill="${cssVar('--text')}" text-anchor="end">${it.label}</text>`;
     svg += `<rect x="${padL}" y="${y-9}" width="${w}" height="18" fill="${c}" rx="2"/>`;
-    svg += `<text x="${padL+w+6}" y="${y+4}" font-family="Manrope" font-weight="600" font-size="11" fill="${cssVar('--text')}">${it.v}%</text>`;
+    svg += `<text x="${padL+w+6}" y="${y+4}" font-family="Poppins" font-weight="600" font-size="11" fill="${cssVar('--text')}">${it.v}%</text>`;
   });
   svg += `</svg>`;
   return svg;
@@ -1082,17 +1081,17 @@ function moduleChart(){
   [0,25,50,75,100].forEach(p => {
     const xx = padL + (p/100) * bar;
     svg += `<line x1="${xx}" y1="${padT}" x2="${xx}" y2="${H-padB}" stroke="#EAEEF4"/>`;
-    svg += `<text x="${xx}" y="${H-padB+16}" font-family="Manrope" font-size="10" fill="${cssVar('--muted')}" text-anchor="middle">${p}%</text>`;
+    svg += `<text x="${xx}" y="${H-padB+16}" font-family="Poppins" font-size="10" fill="${cssVar('--muted')}" text-anchor="middle">${p}%</text>`;
   });
   rows.forEach((r,i) => {
     const y = padT + i*rowH + rowH/2;
     const w = (r.v/100) * bar;
     const c = statusColor(statusFor(r.v));
-    svg += `<text x="${padL-10}" y="${y+4}" font-family="Source Sans 3" font-size="11" fill="${cssVar('--muted')}" text-anchor="end">${r.label}</text>`;
+    svg += `<text x="${padL-10}" y="${y+4}" font-family="Poppins" font-size="11" fill="${cssVar('--muted')}" text-anchor="end">${r.label}</text>`;
     svg += `<rect x="${padL}" y="${y-9}" width="${w}" height="18" fill="${c}" rx="2"/>`;
-    svg += `<text x="${padL+w+6}" y="${y+4}" font-family="Manrope" font-weight="600" font-size="11" fill="${cssVar('--text')}">${r.v}%</text>`;
+    svg += `<text x="${padL+w+6}" y="${y+4}" font-family="Poppins" font-weight="600" font-size="11" fill="${cssVar('--text')}">${r.v}%</text>`;
     if(r.tag){
-      svg += `<text x="${padL+bar}" y="${y-12}" font-family="Source Sans 3" font-style="italic" font-size="10" fill="${cssVar('--muted')}" text-anchor="end">${r.tag}</text>`;
+      svg += `<text x="${padL+bar}" y="${y-12}" font-family="Poppins" font-style="italic" font-size="10" fill="${cssVar('--muted')}" text-anchor="end">${r.tag}</text>`;
     }
   });
   svg += `</svg>`;
@@ -1150,8 +1149,8 @@ function render(){
   // Summary bullets (auto-built)
   const name = get('name') || 'The student';
   const summary = [
-    `${name} scored ${composite} — R&W at ${num('rw')} and Math at ${num('math')} — with a ${Math.abs(gap)}-point gap to the ${num('target')} target.`,
-    `Recommended: ${num('pkg_hours')}-hour package, ${get('cadence') || '—'}.`
+    `${name}'s total score is ${composite} (Reading &amp; Writing: ${num('rw')}, Math: ${num('math')}). The gap to the ${num('target')} target is ${Math.abs(gap)} points.`,
+    `Recommended plan: ${num('pkg_hours')}-hour package, ${get('cadence') || '—'}.`
   ];
   $('p_summary').innerHTML = summary.map(s => `<li>${s}</li>`).join('');
 
@@ -1205,7 +1204,7 @@ document.querySelectorAll('[data-update]').forEach(el => el.addEventListener('in
 function printPDF(){
   const name = get('name') || 'student';
   const date = new Date().toISOString().slice(0,10);
-  document.title = `BeGifted Snapshot - ${name} - ${date}`;
+  document.title = `BeGifted SAT Diagnostic Report - ${name} - ${date}`;
   window.print();
 }
 
