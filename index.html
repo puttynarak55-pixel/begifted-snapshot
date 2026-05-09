@@ -464,6 +464,132 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
   margin:10px 0;
 }
 
+/* ---------- AUTH GATE ---------- */
+.auth-overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#F1F3F7 0%,#E8ECF3 100%);
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  font-family:var(--body);
+}
+.auth-overlay.hidden{display:none}
+.auth-card{
+  background:white;
+  padding:36px 32px;
+  border-radius:8px;
+  width:100%;
+  max-width:380px;
+  text-align:center;
+  box-shadow:0 12px 48px rgba(0,0,0,0.10),0 2px 6px rgba(0,0,0,0.04);
+}
+.auth-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--blue);
+  color:white;
+  padding:6px 14px;
+  border-radius:4px;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:18px;
+}
+.auth-brand-mark{
+  width:20px;height:20px;
+  background:var(--orange);
+  border-radius:3px;
+}
+.auth-card h1{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:20px;
+  color:var(--text);
+  margin:0 0 6px;
+  letter-spacing:-0.01em;
+}
+.auth-card p{
+  color:var(--muted);
+  font-size:13px;
+  margin:0 0 20px;
+}
+.auth-card input{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:14px;
+  font-family:var(--body);
+  outline:none;
+  transition:border-color .15s,box-shadow .15s;
+  margin-bottom:10px;
+  text-align:center;
+  letter-spacing:0.05em;
+}
+.auth-card input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(20,71,159,0.10);
+}
+.auth-card button{
+  width:100%;
+  padding:12px 16px;
+  background:var(--blue);
+  color:white;
+  border:none;
+  border-radius:6px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:var(--body);
+  transition:background .15s;
+  margin-top:4px;
+}
+.auth-card button:hover{background:var(--blue-dark)}
+.auth-err{
+  color:var(--red);
+  font-size:12px;
+  margin:6px 0 0;
+  min-height:16px;
+  font-weight:500;
+}
+.auth-shake{animation:authshake 0.4s}
+@keyframes authshake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  75%{transform:translateX(8px)}
+}
+.auth-foot{
+  font-size:11px;
+  color:var(--muted-soft);
+  margin-top:18px;
+}
+
+/* Sign out button */
+.signout-btn{
+  position:fixed;
+  bottom:16px;
+  right:16px;
+  background:white;
+  border:1px solid var(--border);
+  padding:6px 12px;
+  border-radius:4px;
+  font-size:11px;
+  color:var(--muted);
+  cursor:pointer;
+  font-family:var(--body);
+  z-index:100;
+  opacity:0.6;
+  transition:opacity .2s;
+}
+.signout-btn:hover{opacity:1}
+@media print{
+  .auth-overlay,.signout-btn{display:none !important}
+}
+
 /* ---------- PRINT ---------- */
 @media print{
   *,*::before,*::after{
@@ -608,6 +734,22 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
 </style>
 </head>
 <body>
+
+<!-- ============ AUTH GATE ============ -->
+<div id="auth-gate" class="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="auth-brand-mark"></div>
+      BeGifted Education
+    </div>
+    <h1>Team Access</h1>
+    <p>Enter the team password to continue</p>
+    <input id="auth-pwd" type="password" placeholder="Password" autocomplete="off">
+    <button id="auth-btn" type="button">Enter</button>
+    <p id="auth-err" class="auth-err"></p>
+    <p class="auth-foot">Internal use only · BeGifted Education</p>
+  </div>
+</div>
 
 <!-- ============ MOBILE TABS ============ -->
 <div class="mobile-tabs">
@@ -939,7 +1081,67 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
   </main>
 </div>
 
+<!-- Sign out button -->
+<button class="signout-btn" onclick="signOut()" title="Sign out">⎋ Sign out</button>
+
 <script>
+/* =============================================
+   🔐 TEAM PASSWORD — CHANGE THIS
+   =============================================
+   To change the password, edit the value below.
+   Keep it inside the quotes ('...').
+   Tell your team the new password after changing.
+*/
+const TEAM_PASSWORD = 'BG2023';
+
+/* If you want to force everyone to log in again
+   (e.g. after changing password), increment the
+   version number below by 1. */
+const AUTH_VERSION = 'v1';
+
+/* ============ AUTH GATE LOGIC ============ */
+const AUTH_KEY = 'bg_auth_' + AUTH_VERSION;
+
+function checkAuth(){
+  const input = document.getElementById('auth-pwd').value;
+  const errEl = document.getElementById('auth-err');
+  const inputEl = document.getElementById('auth-pwd');
+  if(input === TEAM_PASSWORD){
+    localStorage.setItem(AUTH_KEY, '1');
+    document.getElementById('auth-gate').classList.add('hidden');
+    errEl.textContent = '';
+  } else {
+    errEl.textContent = 'Wrong password. Try again.';
+    inputEl.classList.add('auth-shake');
+    inputEl.value = '';
+    setTimeout(() => inputEl.classList.remove('auth-shake'), 400);
+    inputEl.focus();
+  }
+}
+
+function signOut(){
+  localStorage.removeItem(AUTH_KEY);
+  location.reload();
+}
+
+// On load: check if already authenticated
+if(localStorage.getItem(AUTH_KEY) === '1'){
+  document.getElementById('auth-gate').classList.add('hidden');
+} else {
+  // focus password field
+  setTimeout(() => {
+    const el = document.getElementById('auth-pwd');
+    if(el) el.focus();
+  }, 100);
+}
+
+// Wire up button + Enter key
+document.getElementById('auth-btn').onclick = checkAuth;
+document.getElementById('auth-pwd').addEventListener('keydown', e => {
+  if(e.key === 'Enter') checkAuth();
+});
+
+
 /* ---------- DEFAULT FINN DATA ---------- */
 const FINN = {
   name:'Finn', school:'RIS', grade:'Year 11',
