@@ -1098,6 +1098,7 @@ const TEAM_PASSWORD = 'BG2023';
    (e.g. after changing password), increment the
    version number below by 1. */
 const AUTH_VERSION = 'v1';
+const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzn8nkHWX0tKPxikkNJ3Nk6I8vs5gb-rj03mBvjYoy-WnK-pILV2NxVKhoM6ZoAZGvx3g/exec'; 
 
 /* ============ AUTH GATE LOGIC ============ */
 const AUTH_KEY = 'bg_auth_' + AUTH_VERSION;
@@ -1403,13 +1404,43 @@ function render(){
 document.querySelectorAll('[data-update]').forEach(el => el.addEventListener('input', render));
 
 /* ---------- PRINT PDF (with auto filename) ---------- */
-function printPDF(){
+async function logToSheet(){
+  if(!SHEET_WEBHOOK_URL || SHEET_WEBHOOK_URL.includes('PASTE')) return;
+  const composite = num('rw') + num('math');
+  const gap = num('target') - composite;
+  const payload = {
+    name: get('name'),
+    school: get('school'),
+    grade: get('grade'),
+    target: num('target'),
+    rw: num('rw'),
+    math: num('math'),
+    composite: composite,
+    gap: gap,
+    pkgHours: num('pkg_hours'),
+    cadence: get('cadence'),
+    rwTrack: get('rw_track'),
+    mathTrack: get('m_track')
+  };
+  try {
+    await fetch(SHEET_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(payload)
+    });
+    console.log('Logged to Sheet');
+  } catch(e){
+    console.error('Sheet log failed:', e);
+  }
+}
+
+async function printPDF(){
+  await logToSheet();
   const name = get('name') || 'student';
   const date = new Date().toISOString().slice(0,10);
   document.title = `BeGifted SAT Diagnostic Report - ${name} - ${date}`;
   window.print();
 }
-
 /* ---------- MOBILE TAB TOGGLE ---------- */
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.onclick = () => {
